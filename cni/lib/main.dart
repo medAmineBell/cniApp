@@ -1,4 +1,5 @@
 import 'package:cni/inscription_screen.dart';
+import 'package:cni/login_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.purple,
       ),
-      home: InscriptionScreen(),
+      home: LoginScreen(),
     );
   }
 }
