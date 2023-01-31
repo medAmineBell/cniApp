@@ -1,34 +1,35 @@
 import 'package:cni/login_screen.dart';
 import 'package:flutter/material.dart';
 
-class InscriptionDoneScreen extends StatefulWidget {
-  const InscriptionDoneScreen({super.key});
+class StageEnvoyerScreen extends StatefulWidget {
+  const StageEnvoyerScreen({super.key});
 
   @override
-  State<InscriptionDoneScreen> createState() => _InscriptionDoneScreenState();
+  State<StageEnvoyerScreen> createState() => _StageEnvoyerScreenState();
 }
 
-class _InscriptionDoneScreenState extends State<InscriptionDoneScreen> {
+class _StageEnvoyerScreenState extends State<StageEnvoyerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              "En attente de confirmation de l'administrateur",
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(),
+          Center(
+            child: Text(
+              "Informations envoyées, veuillez attendre l'acceptation de l'administrateur",
+              textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.w600,
+                fontSize: 20,
+                fontWeight: FontWeight.w400,
               ),
             ),
-            SizedBox(
-              height: 30,
-            ),
-            ElevatedButton(
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 50),
+            child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20)),
@@ -43,15 +44,15 @@ class _InscriptionDoneScreenState extends State<InscriptionDoneScreen> {
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
                 child: Text(
-                  "OK",
+                  "S'identifier",
                   style: TextStyle(
                     fontSize: 20,
                   ),
                 ),
               ),
-            )
-          ],
-        ),
+            ),
+          ),
+        ],
       ),
     );
   }

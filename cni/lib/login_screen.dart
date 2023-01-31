@@ -1,4 +1,6 @@
+import 'package:cni/inscription_done_screen.dart';
 import 'package:cni/inscription_screen.dart';
+import 'package:cni/stage_screen.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -72,11 +74,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     borderRadius: BorderRadius.circular(20)),
               ),
               onPressed: () {
-                // Navigator.of(context).push(
-                //   MaterialPageRoute<void>(
-                //     builder: (BuildContext context) => LoginScreen(),
-                //   ),
-                // );
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute<void>(
+                    builder: (BuildContext context) => InscriptionDoneScreen(),
+                  ),
+                );
               },
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),

@@ -1,4 +1,5 @@
 import 'package:cni/inscription_done_screen.dart';
+import 'package:cni/stage_screen.dart';
 import 'package:flutter/material.dart';
 
 class InscriptionScreen extends StatefulWidget {
@@ -166,10 +167,9 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                       borderRadius: BorderRadius.circular(20)),
                 ),
                 onPressed: () {
-                  Navigator.of(context).pushReplacement(
+                  Navigator.of(context).push(
                     MaterialPageRoute<void>(
-                      builder: (BuildContext context) =>
-                          InscriptionDoneScreen(),
+                      builder: (BuildContext context) => StageScreen(),
                     ),
                   );
                 },
