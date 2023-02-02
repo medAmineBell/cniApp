@@ -1,3 +1,5 @@
+import 'package:cni/admin_screen.dart';
+import 'package:cni/confirmation_screen.dart';
 import 'package:cni/inscription_done_screen.dart';
 import 'package:cni/inscription_screen.dart';
 import 'package:cni/stage_screen.dart';
@@ -13,6 +15,9 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController cincontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
+
+  bool _validcin = false;
+  bool _validpwd = false;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 controller: cincontroller,
                 decoration: InputDecoration(
                   labelText: 'CIN',
-                  //errorText: _validatname ? 'Event name empty' : null,
+                  errorText: _validcin ? 'CIN est vide!' : null,
                   contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(32.0)),
@@ -58,10 +63,11 @@ class _LoginScreenState extends State<LoginScreen> {
               child: TextFormField(
                 keyboardType: TextInputType.visiblePassword,
                 autofocus: false,
+                obscureText: true,
                 controller: passwordcontroller,
                 decoration: InputDecoration(
-                  labelText: 'Password',
-                  //errorText: _validatname ? 'Event name empty' : null,
+                  labelText: 'Mot de passe',
+                  errorText: _validpwd ? 'Mot de passe est vide!' : null,
                   contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(32.0)),
@@ -74,11 +80,21 @@ class _LoginScreenState extends State<LoginScreen> {
                     borderRadius: BorderRadius.circular(20)),
               ),
               onPressed: () {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute<void>(
-                    builder: (BuildContext context) => InscriptionDoneScreen(),
-                  ),
-                );
+                setState(() {
+                  cincontroller.text.isEmpty
+                      ? _validcin = true
+                      : _validcin = false;
+                  passwordcontroller.text.isEmpty
+                      ? _validpwd = true
+                      : _validpwd = false;
+                });
+                if (cincontroller.text.isNotEmpty &&
+                    passwordcontroller.text.isNotEmpty)
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute<void>(
+                      builder: (BuildContext context) => AdminSceen(),
+                    ),
+                  );
               },
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),

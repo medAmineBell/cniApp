@@ -17,6 +17,9 @@ class _StageScreenState extends State<StageScreen> {
   DateTime? _dateFinStage = DateTime.now();
 
   bool paid = false;
+  bool _validtype = false;
+  bool _validsujet = false;
+  bool _validencadrant = false;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +49,7 @@ class _StageScreenState extends State<StageScreen> {
                 controller: typecontroller,
                 decoration: InputDecoration(
                   labelText: 'Type de stage',
-                  //errorText: _validatname ? 'Event name empty' : null,
+                  errorText: _validtype ? 'Type de stage est vide!' : null,
                   contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(32.0)),
@@ -56,12 +59,13 @@ class _StageScreenState extends State<StageScreen> {
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
               child: TextFormField(
-                keyboardType: TextInputType.text,
+                keyboardType: TextInputType.multiline,
                 autofocus: false,
+                maxLines: 4,
                 controller: sujetcontroller,
                 decoration: InputDecoration(
                   labelText: 'Sujet',
-                  //errorText: _validatname ? 'Event name empty' : null,
+                  errorText: _validsujet ? 'Sujet de stage est vide!' : null,
                   contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(32.0)),
@@ -138,7 +142,7 @@ class _StageScreenState extends State<StageScreen> {
                 controller: encadrantcontroller,
                 decoration: InputDecoration(
                   labelText: 'Encadrant',
-                  //errorText: _validatname ? 'Event name empty' : null,
+                  errorText: _validencadrant ? 'Encadrant est vide!' : null,
                   contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(32.0)),
@@ -151,11 +155,25 @@ class _StageScreenState extends State<StageScreen> {
                     borderRadius: BorderRadius.circular(20)),
               ),
               onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute<void>(
-                    builder: (BuildContext context) => StageEnvoyerScreen(),
-                  ),
-                );
+                setState(() {
+                  typecontroller.text.isEmpty
+                      ? _validtype = true
+                      : _validtype = false;
+                  sujetcontroller.text.isEmpty
+                      ? _validsujet = true
+                      : _validsujet = false;
+                  encadrantcontroller.text.isEmpty
+                      ? _validencadrant = true
+                      : _validencadrant = false;
+                });
+                if (typecontroller.text.isNotEmpty &&
+                    sujetcontroller.text.isNotEmpty &&
+                    encadrantcontroller.text.isNotEmpty)
+                  Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (BuildContext context) => StageEnvoyerScreen(),
+                    ),
+                  );
               },
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
