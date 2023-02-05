@@ -2,8 +2,10 @@ import 'package:cni/admin_screen.dart';
 import 'package:cni/confirmation_screen.dart';
 import 'package:cni/inscription_done_screen.dart';
 import 'package:cni/inscription_screen.dart';
+import 'package:cni/provider/data_provider.dart';
 import 'package:cni/stage_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -79,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20)),
               ),
-              onPressed: () {
+              onPressed: () async {
                 setState(() {
                   cincontroller.text.isEmpty
                       ? _validcin = true
@@ -89,12 +91,48 @@ class _LoginScreenState extends State<LoginScreen> {
                       : _validpwd = false;
                 });
                 if (cincontroller.text.isNotEmpty &&
-                    passwordcontroller.text.isNotEmpty)
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute<void>(
-                      builder: (BuildContext context) => AdminSceen(),
-                    ),
-                  );
+                    passwordcontroller.text.isNotEmpty) {
+                  final result =
+                      await Provider.of<DataProvider>(context, listen: false)
+                          .login(cincontroller.text, passwordcontroller.text);
+                  if (result) {
+                    final user =
+                        Provider.of<DataProvider>(context, listen: false).user;
+                    if (user.role == "admin") {
+                      await Provider.of<DataProvider>(context, listen: false)
+                          .getStages();
+                      await Provider.of<DataProvider>(context, listen: false)
+                          .getStudents();
+                      await Provider.of<DataProvider>(context, listen: false)
+                          .getUsers();
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute<void>(
+                          builder: (BuildContext context) => AdminSceen(),
+                        ),
+                      );
+                    } else {
+                      final status = await Provider.of<DataProvider>(context,
+                              listen: false)
+                          .checkStageStatus(user.id);
+
+                      if (status) {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute<void>(
+                            builder: (BuildContext context) =>
+                                ConfirmationScreen(),
+                          ),
+                        );
+                      } else {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute<void>(
+                            builder: (BuildContext context) =>
+                                InscriptionDoneScreen(),
+                          ),
+                        );
+                      }
+                    }
+                  }
+                }
               },
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),

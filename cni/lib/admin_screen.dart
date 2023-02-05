@@ -1,5 +1,8 @@
+import 'package:cni/models/student.dart';
+import 'package:cni/provider/data_provider.dart';
 import 'package:cni/widget/student_item.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AdminSceen extends StatefulWidget {
   const AdminSceen({super.key});
@@ -9,6 +12,14 @@ class AdminSceen extends StatefulWidget {
 }
 
 class _AdminSceenState extends State<AdminSceen> {
+  List<Student> students = [];
+
+  @override
+  void initState() {
+    super.initState();
+    students = Provider.of<DataProvider>(context, listen: false).students;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,18 +43,11 @@ class _AdminSceenState extends State<AdminSceen> {
           Expanded(
             child: ListView(
               children: [
-                StudentItem(),
-                StudentItem(),
-                StudentItem(),
-                StudentItem(),
-                StudentItem(),
-                StudentItem(),
-                StudentItem(),
-                StudentItem(),
-                StudentItem(),
-                StudentItem(),
-                StudentItem(),
-                StudentItem(),
+                ...students
+                    .map((e) => StudentItem(
+                          student: e,
+                        ))
+                    .toList()
               ],
             ),
           )

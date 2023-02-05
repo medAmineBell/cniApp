@@ -1,6 +1,8 @@
 import 'package:cni/inscription_done_screen.dart';
+import 'package:cni/provider/data_provider.dart';
 import 'package:cni/stage_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class InscriptionScreen extends StatefulWidget {
   const InscriptionScreen({super.key});
@@ -192,7 +194,7 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
                 ),
-                onPressed: () {
+                onPressed: () async {
                   setState(() {
                     cincontroller.text.isEmpty
                         ? _validcin = true
@@ -219,19 +221,35 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                         ? _validaddress = true
                         : _validaddress = false;
                   });
-                  // if (cincontroller.text.isNotEmpty &&
-                  //     passwordcontroller.text.isNotEmpty &&
-                  //     prenomcontroller.text.isNotEmpty &&
-                  //     nomcontroller.text.isNotEmpty &&
-                  //     telephonecontroller.text.isNotEmpty &&
-                  //     addresscontroller.text.isNotEmpty &&
-                  //     niveaucontroller.text.isNotEmpty &&
-                  //     locationcontroller.text.isNotEmpty)
-                  Navigator.of(context).push(
-                    MaterialPageRoute<void>(
-                      builder: (BuildContext context) => StageScreen(),
-                    ),
-                  );
+                  if (cincontroller.text.isNotEmpty &&
+                      passwordcontroller.text.isNotEmpty &&
+                      prenomcontroller.text.isNotEmpty &&
+                      nomcontroller.text.isNotEmpty &&
+                      telephonecontroller.text.isNotEmpty &&
+                      addresscontroller.text.isNotEmpty &&
+                      niveaucontroller.text.isNotEmpty &&
+                      locationcontroller.text.isNotEmpty) {
+                    final student = await Provider.of<DataProvider>(context,
+                            listen: false)
+                        .addUser(cincontroller.text, passwordcontroller.text);
+                    await Provider.of<DataProvider>(context, listen: false)
+                        .addStudent(
+                            nomcontroller.text,
+                            prenomcontroller.text,
+                            addresscontroller.text,
+                            niveaucontroller.text,
+                            locationcontroller.text,
+                            telephonecontroller.text,
+                            getDateStr(_date!),
+                            student.id);
+
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context) =>
+                            StageScreen(userId: student.id),
+                      ),
+                    );
+                  }
                 },
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),

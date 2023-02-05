@@ -1,8 +1,11 @@
+import 'package:cni/provider/data_provider.dart';
 import 'package:cni/stage_envoyer_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class StageScreen extends StatefulWidget {
-  const StageScreen({super.key});
+  final String userId;
+  const StageScreen({super.key, required this.userId});
 
   @override
   State<StageScreen> createState() => _StageScreenState();
@@ -154,7 +157,7 @@ class _StageScreenState extends State<StageScreen> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20)),
               ),
-              onPressed: () {
+              onPressed: () async {
                 setState(() {
                   typecontroller.text.isEmpty
                       ? _validtype = true
@@ -168,12 +171,22 @@ class _StageScreenState extends State<StageScreen> {
                 });
                 if (typecontroller.text.isNotEmpty &&
                     sujetcontroller.text.isNotEmpty &&
-                    encadrantcontroller.text.isNotEmpty)
+                    encadrantcontroller.text.isNotEmpty) {
+                  await Provider.of<DataProvider>(context, listen: false)
+                      .addStage(
+                          typecontroller.text,
+                          sujetcontroller.text,
+                          encadrantcontroller.text,
+                          getDateStr(_dateDebStage!),
+                          getDateStr(_dateFinStage!),
+                          paid,
+                          widget.userId);
                   Navigator.of(context).push(
                     MaterialPageRoute<void>(
                       builder: (BuildContext context) => StageEnvoyerScreen(),
                     ),
                   );
+                }
               },
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
